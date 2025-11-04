@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { TeacherStackParamList } from "../navigation/TeacherStack";
 import { Button } from "../components/Button/Button";
+import { Pill } from "../components/Pill/Pill";
 import { Pressable } from "../components/Pressable/Pressable";
 import { theme } from "../styles/theme";
 
@@ -199,26 +200,8 @@ export const TeacherDashboardScreen = () => {
       </View>
 
       <View style={styles.filterRow}>
-        {filters.map((filter) => (
-          <Pressable
-            key={filter.value}
-            onPress={() => setActiveFilter(filter.value)}
-            containerStyle={styles.filterPressableContainer}
-            pressableStyle={[
-              styles.filterChip,
-              activeFilter === filter.value && styles.filterChipActive,
-            ]}
-            rippleColor="accent"
-          >
-            <Text
-              style={[
-                styles.filterText,
-                activeFilter === filter.value && styles.filterTextActive,
-              ]}
-            >
-              {filter.label}
-            </Text>
-          </Pressable>
+        {filters.map((f) => (
+          <Pill key={f.value} label={f.label} active={activeFilter === f.value} onPress={() => setActiveFilter(f.value)} />
         ))}
       </View>
 
@@ -297,29 +280,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 6,
   },
-  filterPressableContainer: {
-    borderRadius: 100,
-    overflow: "hidden",
-  },
-  filterChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: theme.colorLines,
-    backgroundColor: theme.white,
-  },
-  filterChipActive: {
-    backgroundColor: theme.accentColor,
-    borderColor: theme.accentColor,
-  },
-  filterText: {
-    color: "#444",
-    fontWeight: "500",
-  },
-  filterTextActive: {
-    color: theme.white,
-  },
+  // Pills rendered via shared component
   listContent: {
     paddingBottom: 28,
   },

@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { theme } from "../styles/theme";
 import { Button } from "../components/Button/Button";
 import { Pressable } from "../components/Pressable/Pressable";
+import { Pill } from "../components/Pill/Pill";
 import { TeacherStackParamList } from "../navigation/TeacherStack";
 
 type Props = NativeStackScreenProps<TeacherStackParamList, "TeacherTaskDetails">;
@@ -93,15 +94,7 @@ export const TeacherTaskDetailsScreen = ({ route }: Props) => {
 
       <View style={styles.filters}>
         {filterDefs.map((f) => (
-          <Pressable
-            key={f.v}
-            rippleColor="accent"
-            containerStyle={styles.filterChipContainer}
-            pressableStyle={[styles.filterChip, filter===f.v && styles.filterChipActive]}
-            onPress={() => setFilter(f.v)}
-          >
-            <Text style={[styles.filterText, filter===f.v && styles.filterTextActive]}>{f.l}</Text>
-          </Pressable>
+          <Pill key={f.v} label={f.l} active={filter === f.v} onPress={() => setFilter(f.v)} />
         ))}
       </View>
 
@@ -285,18 +278,6 @@ const styles = StyleSheet.create({
   status_completed: { backgroundColor: "#4CAF50" },
 
   filters: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
-  filterChipContainer: { borderRadius: 100, overflow: "hidden" },
-  filterChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: theme.colorLines,
-    backgroundColor: theme.white,
-  },
-  filterChipActive: { backgroundColor: theme.accentColor, borderColor: theme.accentColor },
-  filterText: { color: "#444", fontWeight: "500" },
-  filterTextActive: { color: theme.white },
 
   listContent: { paddingBottom: 28 },
   cardContainer: { borderRadius: 12, overflow: "hidden" },
