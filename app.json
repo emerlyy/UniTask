@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "useNextNotificationsApi": true
     },
     "web": {
       "output": "static",
@@ -38,8 +39,20 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      "expo-secure-store"
     ],
+    "extra": {
+      "eas": {
+        "projectId": "2123fd11-7953-42c6-85a6-a3230c49811e"
+      }
+    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
