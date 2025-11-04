@@ -9,19 +9,6 @@ import { getMarkText } from "../utils/getMarkText";
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Task">;
 
-import * as Notifications from "expo-notifications";
-
-const triggerNotifications = async () => {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You’ve got mail! 📬",
-      body: "Here is the notification body",
-      data: { data: "goes here", test: { test1: "more data" } },
-    },
-    trigger: {seconds:2},
-  });
-};
-
 export const TaskScreen = ({
   route: {
     params: { title, body, expirationDate, publishDate, mark },
@@ -61,8 +48,8 @@ export const TaskScreen = ({
         <Button
           title="Відправити"
           onPress={async () => {
-            await triggerNotifications();
-            console.log('dadsar')
+        
+            console.log('Submit')
           }}
         />
       </View>

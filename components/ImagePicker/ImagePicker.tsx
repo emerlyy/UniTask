@@ -18,11 +18,11 @@ export const ImagePicker = () => {
 	});
 
 	const handlePress = async () => {
-		try {
-			let result = await ImagePickerL.launchImageLibraryAsync({
-				mediaTypes: ImagePickerL.MediaTypeOptions.Images,
-				allowsMultipleSelection: true,
-			});
+	try {
+		let result = await ImagePickerL.launchImageLibraryAsync({
+			mediaTypes: ["images"] as const,
+			allowsMultipleSelection: true,
+		});
 			setPicked(result);
 		} catch (err) {
 			if (err instanceof Error) {
