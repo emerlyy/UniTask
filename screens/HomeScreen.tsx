@@ -7,14 +7,15 @@ import { theme } from "../styles/theme";
 import { Task } from "../types";
 
 const filters = [
-  { value: "scheduled", label: "Призначені" },
-  { value: "submitted", label: "Здані" },
-  { value: "all", label: "Всі" },
+  { value: "all", label: "Усі" },
+  { value: "assigned", label: "Призначені" },
+  { value: "pending", label: "Очікують" },
+  { value: "graded", label: "Оцінено" },
 ];
 
 export const HomeScreen = () => {
-  const [activeFilter, setActiveFilter] = useState(filters[0].value);
-  const [tasks, setTasks] = useState(taks.sort((task) => (task.mark ? 1 : -1)));
+  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [tasks] = useState(taks.sort((task) => (task.mark ? 1 : -1)));
 
   const changeFilter = (filter: string) => {
     setActiveFilter(filter);
@@ -22,14 +23,16 @@ export const HomeScreen = () => {
 
   const filteredTasks = useMemo(() => {
     switch (activeFilter) {
-      case "scheduled":
+      case "assigned":
         return tasks.filter((item) => !item.submitted);
-      case "submitted":
-        return tasks.filter((item) => !!item.submitted);
+      case "pending":
+        return tasks.filter((item) => item.submitted && !item.mark);
+      case "graded":
+        return tasks.filter((item) => item.submitted && !!item.mark);
       default:
         return tasks;
     }
-  }, [activeFilter]);
+  }, [activeFilter, tasks]);
 
   return (
     <View style={styles.container}>
@@ -54,8 +57,8 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     paddingHorizontal: 12,
-    paddingTop: 4,
-    paddingBottom: 8,
+    paddingTop: 6,
+    paddingBottom: 10,
     backgroundColor: "white",
     borderBottomWidth: 1,
     borderBottomColor: theme.colorLines,

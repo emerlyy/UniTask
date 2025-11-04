@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../../navigation/AppNav";
 import { theme } from "../../styles/theme";
 import { Task as TTask } from "../../types";
-import { getMarkText } from "../../utils/getMarkText";
 import { Pressable } from "../Pressable/Pressable";
 
 type TaskProps = TTask;
@@ -37,6 +36,12 @@ export const Task = ({
 		});
 	};
 
+	const status = (() => {
+		if (!submitted) return { label: "Призначено", style: styles.statusAssigned };
+		if (submitted && !mark) return { label: "Очікує", style: styles.statusPending };
+		return { label: "Оцінено", style: styles.statusGraded };
+	})();
+
 	return (
 		<Pressable
 			containerStyle={styles.container}
@@ -46,9 +51,14 @@ export const Task = ({
 		>
 			<View style={styles.taskHeader}>
 				<Text style={styles.titleText}>{title}</Text>
-				<Text style={styles.markText}>{getMarkText(submitted, mark)}</Text>
+				<View style={[styles.statusPill, status.style]}>
+					<Text style={styles.statusText}>
+						{status.label}
+						{status.label === "Оцінено" && mark ? ` • ${mark}/100` : ""}
+					</Text>
+				</View>
 			</View>
-			<Text>{author}</Text>
+			<Text style={styles.author}>{author}</Text>
 			<View
 				style={{
 					flexDirection: "row",
@@ -84,9 +94,22 @@ const styles = StyleSheet.create({
 		marginBottom: 0,
 		flex: 1,
 	},
-	markText: {
-		fontSize: 14,
-		lineHeight: 14,
+	statusPill: {
+		paddingHorizontal: 10,
+		paddingVertical: 4,
+		borderRadius: 999,
+	},
+	statusText: {
+		color: theme.white,
+		fontSize: 12,
+		fontWeight: "600",
+	},
+	statusAssigned: { backgroundColor: "#90A4AE" },
+	statusPending: { backgroundColor: "#FF9800" },
+	statusGraded: { backgroundColor: "#4CAF50" },
+	author: {
+		color: "#333",
+		marginTop: 2,
 	},
 	publishDate: {
 		marginBottom: 0,
