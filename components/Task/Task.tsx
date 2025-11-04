@@ -23,17 +23,20 @@ export const Task = ({
 }: TaskProps) => {
 	const navigation = useNavigation<HomeScreenNavigationProp>();
 
-	const handleClick = () => {
-		navigation.navigate("Task", {
-			title,
-			body,
-			publishDate,
-			expirationDate,
-			mark,
-			author,
-			submitted,
-		});
-	};
+		const handleClick = () => {
+			navigation.navigate("Task", {
+				title,
+				body,
+          course,
+				publishDate,
+				expirationDate,
+				mark,
+				author,
+				submitted,
+          status:
+            !submitted ? "assigned" : submitted && !mark ? "pending" : "graded",
+			});
+		};
 
 	const status = (() => {
 		if (!submitted) return { label: "Призначено", style: styles.statusAssigned };

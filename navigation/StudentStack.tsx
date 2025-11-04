@@ -6,7 +6,7 @@ import { StudentTabs } from "./StudentTabs";
 
 export type StudentStackParamList = {
   Tabs: undefined;
-  Task: Task;
+  Task: Task & { status?: 'assigned' | 'pending' | 'graded' };
 };
 
 const Stack = createNativeStackNavigator<StudentStackParamList>();
@@ -28,7 +28,7 @@ export const StudentStack = () => {
         name="Task"
         component={TaskScreen}
         options={{
-          title: "",
+          title: "Завдання",
         }}
       />
     </Stack.Navigator>

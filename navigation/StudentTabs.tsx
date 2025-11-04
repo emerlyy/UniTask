@@ -17,6 +17,20 @@ export const StudentTabs = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: theme.accentColor,
+        tabBarInactiveTintColor: "#8A8A8A",
+        tabBarStyle: {
+          backgroundColor: theme.white,
+          borderTopWidth: 1,
+          borderTopColor: theme.colorLines,
+          height: 58,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "700",
+        },
+        tabBarItemStyle: {
+          paddingVertical: 4,
+        },
         tabBarIcon: ({ color, size, focused }) => {
           const name = route.name === "Dashboard"
             ? (focused ? "home" : "home-outline")
