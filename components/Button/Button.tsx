@@ -10,6 +10,7 @@ interface ButtonProps {
 	titleKey?: string;
 	type?: "primary" | "secondary";
 	size?: "small" | "large";
+  fullWidth?: boolean;
 }
 
 export const Button = ({
@@ -19,6 +20,7 @@ export const Button = ({
 	animateTitle,
 	type = "primary",
 	size = "small",
+  fullWidth = false,
 }: ButtonProps) => {
 	return (
 		<Pressable
@@ -26,7 +28,7 @@ export const Button = ({
 				styles.container,
 				type === "secondary" && styles.secondary,
 			]}
-			pressableStyle={[styles.button, size === "large" && styles.large]}
+			pressableStyle={[styles.button, size === "large" && styles.large, fullWidth && styles.fullWidth]}
 			rippleColor={type === "primary" ? "white" : "accent"}
 			onPress={onPress}
 		>
@@ -57,6 +59,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 14,
 	},
+  fullWidth: {
+    width: "100%",
+  },
 	buttonText: {
 		color: theme.white,
 		fontSize: 16,
