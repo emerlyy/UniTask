@@ -21,13 +21,5 @@ export const AppNav = () => {
     return <AuthStack />;
   }
 
-  if (!userRole) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return userRole === "teacher" ? <TeacherStack /> : <StudentStack />;
 };

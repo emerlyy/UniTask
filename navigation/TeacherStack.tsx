@@ -2,10 +2,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Logout } from "../components/Logout/Logout";
 import { TeacherDashboardScreen } from "../screens/TeacherDashboardScreen";
 import { TeacherTaskDetailsScreen } from "../screens/TeacherTaskDetailsScreen";
+import { TeacherTaskCreateScreen } from "../screens/TeacherTaskCreateScreen";
 
 export type TeacherStackParamList = {
   TeacherDashboard: undefined;
   TeacherTaskDetails: { taskId: string };
+  TeacherTaskCreate: undefined;
 };
 
 const Stack = createNativeStackNavigator<TeacherStackParamList>();
@@ -28,6 +30,11 @@ export const TeacherStack = () => {
         name="TeacherTaskDetails"
         component={TeacherTaskDetailsScreen}
         options={{ title: "Завдання" }}
+      />
+      <Stack.Screen
+        name="TeacherTaskCreate"
+        component={TeacherTaskCreateScreen}
+        options={{ title: "Створити завдання" }}
       />
     </Stack.Navigator>
   );

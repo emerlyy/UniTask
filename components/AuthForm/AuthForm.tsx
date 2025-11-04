@@ -12,7 +12,7 @@ import Animated, {
   FadeOut,
   LinearTransition,
 } from "react-native-reanimated";
-import { Controller, RegisterOptions } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { theme } from "../../styles/theme";
 import { UserRole } from "../../types/User";
 import { Button } from "../Button/Button";
@@ -62,41 +62,6 @@ const roleOptions: { value: UserRole; label: string }[] = [
   { value: "teacher", label: "Викладач" },
 ];
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const getValidationRules = (
-  field: FormInput["id"],
-  isRegister: boolean
-): RegisterOptions<AuthFormInputs, FormInput["id"]> | undefined => {
-  switch (field) {
-    case "email":
-      return {
-        required: "Обов'язкове поле",
-        pattern: {
-          value: EMAIL_REGEX,
-          message: "Невірний формат",
-        },
-      };
-    case "password":
-      return {
-        required: "Обов'язкове поле",
-        minLength: {
-          value: 5,
-          message: "Пароль надто короткий",
-        },
-      };
-    case "firstName":
-    case "lastName":
-      return isRegister
-        ? {
-            required: "Обов'язкове поле",
-          }
-        : undefined;
-    default:
-      return undefined;
-  }
-};
-
 export const AuthForm = () => {
   const {
     form: { control, handleSubmit },
@@ -121,14 +86,11 @@ export const AuthForm = () => {
       </Animated.Text>
       <Animated.View style={styles.form} layout={layoutTransition}>
         {(isRegister ? inputsRegister : inputsLogin).map(({ id, ...props }) => {
-          const rules = getValidationRules(id, isRegister);
-
           return (
             <Controller
               key={id}
               control={control}
               name={id}
-              rules={rules}
               render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                 <Input
                   {...props}

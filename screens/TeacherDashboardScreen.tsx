@@ -172,7 +172,7 @@ export const TeacherDashboardScreen = () => {
           <Text style={styles.subtitle}>Керуйте завданнями курсу та слідкуйте за прогресом групи</Text>
         </View>
         <View style={styles.headerAction}>
-          <Button title="Створити завдання" size="large" fullWidth onPress={() => {}} />
+          <Button title="Створити завдання" size="large" fullWidth onPress={() => navigation.navigate("TeacherTaskCreate")} />
         </View>
       </View>
 
