@@ -1,17 +1,13 @@
 import { ActivityIndicator, View } from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { Task } from "../types";
-import { AppStack } from "./AppStack";
 import { AuthStack } from "./AuthStack";
+import { StudentStack, StudentStackParamList } from "./StudentStack";
+import { TeacherStack } from "./TeacherStack";
 
-export type RootStackParamList = {
-  Auth: undefined;
-  Home: undefined;
-  Task: Task;
-};
+export type RootStackParamList = StudentStackParamList;
 
 export const AppNav = () => {
-  const { isLoading, userToken } = useAuth();
+  const { isLoading, userToken, userRole } = useAuth();
 
   if (isLoading) {
     return (
@@ -21,5 +17,17 @@ export const AppNav = () => {
     );
   }
 
-  return userToken !== null ? <AppStack /> : <AuthStack />;
+  if (!userToken) {
+    return <AuthStack />;
+  }
+
+  if (!userRole) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  return userRole === "teacher" ? <TeacherStack /> : <StudentStack />;
 };

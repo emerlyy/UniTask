@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View, StyleProp, TextStyle } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { theme } from "../../styles/theme";
 
@@ -8,10 +8,11 @@ interface InputProps extends React.ComponentProps<typeof TextInput> {
 	onChangeText?: (text: string) => void;
 	label?: string;
 	errorMessage?: string;
+	style?: StyleProp<TextStyle>;
 }
 
 const InputComponent = (
-	{ value, onChangeText, label, errorMessage, ...props }: InputProps,
+	{ value, onChangeText, label, errorMessage, style, ...props }: InputProps,
 	ref: React.Ref<View>
 ) => {
 		return (
@@ -29,7 +30,7 @@ const InputComponent = (
 					)}
 				</View>
 				<TextInput
-					style={styles.input}
+					style={[styles.input, style]}
 					placeholder="Введіть ваш логін"
 					value={value}
 					onChangeText={onChangeText}

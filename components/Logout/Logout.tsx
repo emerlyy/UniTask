@@ -4,7 +4,11 @@ import { useAuth } from "../../context/AuthContext";
 import { theme } from "../../styles/theme";
 
 export const Logout = () => {
-  const { logout } = useAuth();
+  const { logout, userProfile } = useAuth();
+  const displayName = [userProfile?.lastName, userProfile?.firstName]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
 
   const handleLogout = () => {
     logout!();
@@ -12,7 +16,7 @@ export const Logout = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.userName}>Івасюк Вадим</Text>
+      {displayName.length > 0 && <Text style={styles.userName}>{displayName}</Text>}
       <View style={styles.iconContainer}>
         <Pressable
           onPress={() =>

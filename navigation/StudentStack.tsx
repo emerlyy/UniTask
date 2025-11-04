@@ -4,14 +4,14 @@ import { HomeScreen } from "../screens/HomeScreen";
 import { TaskScreen } from "../screens/TaskScreen";
 import { Task } from "../types";
 
-export type AppStackParamList = {
+export type StudentStackParamList = {
   Home: undefined;
   Task: Task;
 };
 
-const Stack = createNativeStackNavigator<AppStackParamList>();
+const Stack = createNativeStackNavigator<StudentStackParamList>();
 
-export const AppStack = () => {
+export const StudentStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{

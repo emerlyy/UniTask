@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAuth } from "../../../context/AuthContext";
+import { UserRole } from "../../../types/User";
 import { isUserRegisterType } from "../../../utils/isUserRegisterType";
 
 const authLoginFormSchema = z.object({
@@ -28,24 +29,36 @@ const authRegisterFormSchema = authLoginFormSchema.extend({
 const loginResolver = zodResolver(authLoginFormSchema);
 const registerResolver = zodResolver(authRegisterFormSchema);
 
-export type AuthFormInputs = z.infer<typeof authRegisterFormSchema>;
+export type AuthFormInputs = {
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole;
+};
 
-const initialState: AuthFormInputs = {
+const loginDefaults: AuthFormInputs = {
   email: "",
   password: "",
+};
+
+const registerDefaults: AuthFormInputs = {
+  ...loginDefaults,
   firstName: "",
   lastName: "",
-  role: 'student',
+  role: undefined,
 };
 
 export const useAuthForm = () => {
   const [isRegister, setIsRegister] = useState(false);
   const { register, login } = useAuth();
 
+  const resolver = useMemo(() => (isRegister ? registerResolver : loginResolver), [isRegister]);
+
   const form = useForm<AuthFormInputs>({
-    defaultValues: initialState,
+    defaultValues: loginDefaults,
     mode: "onSubmit",
-    resolver: isRegister ? registerResolver : loginResolver,
+    resolver,
   });
 
   const toggleIsRegister = () => {
@@ -55,20 +68,20 @@ export const useAuthForm = () => {
   const { reset } = form;
 
   useEffect(() => {
-    reset(initialState, {
+    reset(isRegister ? registerDefaults : loginDefaults, {
       keepErrors: false,
       keepDirty: false,
       keepTouched: false,
     });
   }, [isRegister, reset]);
 
-  const onSubmit: SubmitHandler<AuthFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<AuthFormInputs> = async (data) => {
     if (isRegister && isUserRegisterType(data)) {
-      register?.(data);
+      await register?.(data);
       return;
     }
 
-    login?.(data);
+    await login?.({ email: data.email, password: data.password });
   };
 
   return {

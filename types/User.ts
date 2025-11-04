@@ -12,3 +12,14 @@ export type UserLogin = {
   email: string;
   password: string;
 };
+
+export type UserProfile = {
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+};
+
+export type AuthResponse = {
+  token: string;
+  user: UserProfile;
+};
