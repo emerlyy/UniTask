@@ -8,10 +8,7 @@ import { Pressable } from "../Pressable/Pressable";
 
 type TaskProps = TTask;
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<
-	RootStackParamList,
-	"Home" | "Task"
->;
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "Task">;
 
 export const Task = ({
 	title,
