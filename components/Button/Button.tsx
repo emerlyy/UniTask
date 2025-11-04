@@ -11,6 +11,7 @@ interface ButtonProps {
 	type?: "primary" | "secondary";
 	size?: "small" | "large";
   fullWidth?: boolean;
+  dense?: boolean;
 }
 
 export const Button = ({
@@ -21,6 +22,7 @@ export const Button = ({
 	type = "primary",
 	size = "small",
   fullWidth = false,
+  dense = false,
 }: ButtonProps) => {
 	return (
 		<Pressable
@@ -28,7 +30,7 @@ export const Button = ({
 				styles.container,
 				type === "secondary" && styles.secondary,
 			]}
-			pressableStyle={[styles.button, size === "large" && styles.large, fullWidth && styles.fullWidth]}
+			pressableStyle={[styles.button, size === "large" && styles.large, dense && styles.dense, fullWidth && styles.fullWidth]}
 			rippleColor={type === "primary" ? "white" : "accent"}
 			onPress={onPress}
 		>
@@ -39,6 +41,7 @@ export const Button = ({
 				style={[
 					styles.buttonText,
 					type === "secondary" && styles.buttonTextSecondary,
+					dense && styles.buttonTextDense,
 				]}
 			>
 				{title}
@@ -59,6 +62,10 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 14,
 	},
+  dense: {
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+  },
   fullWidth: {
     width: "100%",
   },
@@ -67,6 +74,10 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 18,
 		fontWeight: "bold",
+	},
+	buttonTextDense:{
+		fontSize: 14,
+		lineHeight: 16,
 	},
 	large: {
 		paddingVertical: 15,

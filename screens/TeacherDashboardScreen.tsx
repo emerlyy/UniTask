@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { TeacherStackParamList } from "../navigation/TeacherStack";
 import { Button } from "../components/Button/Button";
 import { Pressable } from "../components/Pressable/Pressable";
 import { theme } from "../styles/theme";
@@ -81,6 +84,7 @@ const mockTasks: TeacherTask[] = [
 ];
 
 export const TeacherDashboardScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<TeacherStackParamList>>();
   const [activeFilter, setActiveFilter] = useState<typeof filters[number]["value"]>("all");
 
   const summary = useMemo(() => {
@@ -125,9 +129,7 @@ export const TeacherDashboardScreen = () => {
         containerStyle={styles.cardContainer}
         pressableStyle={styles.card}
         rippleColor="accent"
-        onPress={() => {
-          // TODO: navigate to details
-        }}
+        onPress={() => navigation.navigate("TeacherTaskDetails", { taskId: item.id })}
       >
         <View style={styles.cardHeader}>
           <Text style={styles.cardCourse}>{item.course}</Text>
