@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { Button } from "../components/Button/Button";
-import { ImagePicker } from "../components/ImagePicker/ImagePicker";
+import { FilePicker } from "../components/FilePicker/FilePicker";
 import { RootStackParamList } from "../navigation/AppNav";
 import { theme } from "../styles/theme";
 import { getMarkText } from "../utils/getMarkText";
@@ -44,7 +44,7 @@ export const TaskScreen = ({
           <Text style={styles.bottomControlsText}>Ваша робота</Text>
           <Text style={styles.markText}>{getMarkText(isSubmitted, mark)}</Text>
         </View>
-        <ImagePicker />
+        <FilePicker />
         <Button
           title="Відправити"
           onPress={async () => {
