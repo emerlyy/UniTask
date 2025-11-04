@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 	},
 	fileContainer: {
 		width: PREVIEW_SIZE,
-		minHeight: 84,
+		aspectRatio: 1,
 		borderWidth: 1,
 		borderColor: theme.colorLines,
 		borderRadius: 6,
