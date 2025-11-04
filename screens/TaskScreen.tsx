@@ -6,12 +6,13 @@ import { FilePicker } from "../components/FilePicker/FilePicker";
 import { RootStackParamList } from "../navigation/AppNav";
 import { theme } from "../styles/theme";
 import { getMarkText } from "../utils/getMarkText";
+import { formatDateDisplay } from "../utils/formatDate";
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Task">;
 
 export const TaskScreen = ({
   route: {
-    params: { title, body, expirationDate, publishDate, mark },
+    params: { title, body, expirationDate, publishDate, mark, author },
   },
 }: TaskScreenProps) => {
   const isSubmitted = true;
@@ -33,9 +34,14 @@ export const TaskScreen = ({
               {getMarkText(isSubmitted, mark)}
             </Text>
             <Text style={{ color: "#333" }}>
-              Термін здачі: {expirationDate}
+              Термін здачі: {formatDateDisplay(expirationDate)}
             </Text>
           </View>
+          {!!author && (
+            <Text style={{ color: "#616161", marginTop: 6 }}>
+              Викладач: <Text style={{ color: "#333", fontWeight: "600" }}>{author}</Text>
+            </Text>
+          )}
         </View>
         <Text style={styles.taskBody}>{body}</Text>
       </ScrollView>
@@ -89,10 +95,6 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 16,
     backgroundColor: theme.white,
-    // elevation: 3,
-    // shadowColor: theme.accentColor,
-    // borderTopWidth: 1,
-    // borderTopColor: "#e7e7e7",
   },
   bottomControlsHeader: {
     flexDirection: "row",

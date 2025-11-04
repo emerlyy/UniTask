@@ -2,11 +2,11 @@ import { useMemo } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import tasksData from "../constants/mockdata.json";
 import { theme } from "../styles/theme";
+import { formatDateDisplay } from "../utils/formatDate";
 
 type TaskItem = (typeof tasksData)[number];
 
 const parseDate = (str: string) => {
-  // supports DD.MM.YYYY and YYYY-MM-DD
   if (/^\d{2}\.\d{2}\.\d{4}$/.test(str)) {
     const [d, m, y] = str.split(".").map(Number);
     return new Date(y, m - 1, d);
@@ -35,8 +35,6 @@ export const StudentAnalyticsScreen = () => {
     const assigned = assignedList.length;
     const avg = graded ? Math.round(gradedList.reduce((s, t) => s + (t.mark || 0), 0) / graded) : 0;
 
-    // nearest upcoming (list of next 3). If немає майбутніх дат (наприклад, у мок-даних минулий рік),
-    // показуємо найближчі за датою незалежно від того, минули вони чи ні — щоб блок завжди був.
     const byDate = assignedList
       .map((t) => ({ t, d: parseDate(t.expirationDate) }))
       .filter((x) => x.d)
@@ -47,7 +45,6 @@ export const StudentAnalyticsScreen = () => {
       .slice(0, 3)
       .map((x) => x.t as TaskItem);
 
-    // top 3 graded
     const topGraded = gradedList
       .slice()
       .sort((a, b) => (b.mark || 0) - (a.mark || 0))
@@ -57,8 +54,13 @@ export const StudentAnalyticsScreen = () => {
     const pendingPercent = total ? Math.round((pending / total) * 100) : 0;
     const assignedPercent = total ? Math.round((assigned / total) * 100) : 0;
 
-    // on-time percent (без часу здачі наближаємо до частки оцінених)
-    const onTimePercent = gradedPercent;
+    const onTimeCount = gradedList.reduce((acc, t) => {
+      const sd = parseDate((t as any).submittedAt as string);
+      const dd = parseDate(t.expirationDate);
+      if (sd && dd && sd.getTime() <= dd.getTime()) return acc + 1;
+      return acc;
+    }, 0);
+    const onTimePercent = graded ? Math.round((onTimeCount / graded) * 100) : 0;
 
     return { graded, pending, assigned, avg, upcomingList, gradedPercent, pendingPercent, assignedPercent, onTimePercent };
   }, []);
@@ -101,7 +103,7 @@ export const StudentAnalyticsScreen = () => {
           {stats.upcomingList.map((t, idx) => (
             <View key={`${t.title}-${idx}`} style={styles.topRow}>
               <Text style={styles.topTitle} numberOfLines={1}>{t.title}</Text>
-              <Text style={styles.topMark}>{t.expirationDate}</Text>
+              <Text style={styles.topMark}>{formatDateDisplay(t.expirationDate)}</Text>
             </View>
           ))}
         </View>

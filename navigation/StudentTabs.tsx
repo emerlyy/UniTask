@@ -25,7 +25,7 @@ export const StudentTabs = () => {
         },
       })}
     >
-      <Tab.Screen name="Dashboard" component={HomeScreen} options={{ title: "Дешборд" }} />
+      <Tab.Screen name="Dashboard" component={HomeScreen} options={{ title: "Завдання" }} />
       <Tab.Screen name="Analytics" component={StudentAnalyticsScreen} options={{ title: "Статистика" }} />
     </Tab.Navigator>
   );

@@ -37,9 +37,6 @@ const InputComponent = (
 					cursorColor={theme.accentColor}
 					{...props}
 				/>
-				{/* {errorMessage && (
-					<Text style={styles.errorMessage}>{errorMessage}</Text>
-				)} */}
 			</Animated.View>
 		);
 };

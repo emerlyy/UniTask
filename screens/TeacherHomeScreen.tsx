@@ -6,6 +6,7 @@ import { z } from "zod";
 import { Button } from "../components/Button/Button";
 import { Input } from "../components/Input/Input";
 import { theme } from "../styles/theme";
+import { formatDateDisplay } from "../utils/formatDate";
 import { Task } from "../types";
 
 const taskSchema = z.object({
@@ -99,7 +100,7 @@ export const TeacherHomeScreen = () => {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               label="Дедлайн"
-              placeholder="2025-05-01"
+              placeholder="01.05.2025"
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -133,7 +134,7 @@ export const TeacherHomeScreen = () => {
           createdTasks.map((task, index) => (
             <View key={`${task.title}-${index}`} style={styles.taskCard}>
               <Text style={styles.taskTitle}>{task.title}</Text>
-              <Text style={styles.taskMeta}>Дедлайн: {task.expirationDate}</Text>
+              <Text style={styles.taskMeta}>Дедлайн: {formatDateDisplay(task.expirationDate)}</Text>
               {task.mark !== undefined && (
                 <Text style={styles.taskMeta}>Максимальний бал: {task.mark}</Text>
               )}

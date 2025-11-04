@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../../navigation/AppNav";
 import { theme } from "../../styles/theme";
+import { formatDateDisplay } from "../../utils/formatDate";
 import { Task as TTask } from "../../types";
 import { Pressable } from "../Pressable/Pressable";
 
@@ -11,13 +12,14 @@ type TaskProps = TTask;
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "Task">;
 
 export const Task = ({
-	title,
-	body,
-	publishDate,
-	expirationDate,
-	mark,
-	author,
-	submitted,
+  course,
+  title,
+  body,
+  publishDate,
+  expirationDate,
+  mark,
+  author,
+  submitted,
 }: TaskProps) => {
 	const navigation = useNavigation<HomeScreenNavigationProp>();
 
@@ -39,75 +41,74 @@ export const Task = ({
 		return { label: "Оцінено", style: styles.statusGraded };
 	})();
 
-	return (
-		<Pressable
-			containerStyle={styles.container}
-			pressableStyle={styles.pressable}
-			onPress={handleClick}
-			rippleColor="accent"
-		>
-			<View style={styles.taskHeader}>
-				<Text style={styles.titleText}>{title}</Text>
-				<View style={[styles.statusPill, status.style]}>
-					<Text style={styles.statusText}>
-						{status.label}
-						{status.label === "Оцінено" && mark ? ` • ${mark}/100` : ""}
-					</Text>
-				</View>
-			</View>
-			<Text style={styles.author}>{author}</Text>
-			<View
-				style={{
-					flexDirection: "row",
-					justifyContent: "space-between",
-					marginTop: 8,
-				}}
-			>
-				<Text style={styles.publishDate}>Опубліковано: {publishDate}</Text>
-				<Text style={styles.publishDate}>Здати до: {expirationDate}</Text>
-			</View>
-		</Pressable>
-	);
+
+  return (
+    <Pressable
+      containerStyle={styles.container}
+      pressableStyle={styles.pressable}
+      onPress={handleClick}
+      rippleColor="accent"
+    >
+      <View style={styles.headerRow}>
+        <Text style={styles.course}>{course || ""}</Text>
+        <View style={[styles.statusPill, status.style]}>
+          <Text style={styles.statusText}>
+            {status.label}
+            {status.label === "Оцінено" && mark ? ` • ${mark}/100` : ""}
+          </Text>
+        </View>
+      </View>
+      <Text style={styles.titleText}>{title}</Text>
+      {!!author && (
+        <Text style={styles.authorText}>Викладач: <Text style={styles.authorValue}>{author}</Text></Text>
+      )}
+      <View style={styles.metaRow}>
+        <Text style={styles.deadline}>Дедлайн: <Text style={styles.deadlineValue}>{formatDateDisplay(expirationDate)}</Text></Text>
+      </View>
+    </Pressable>
+  );
 };
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: theme.white,
-		borderWidth: 0.5,
-		borderColor: theme.accentColor,
-		borderRadius: 8,
-	},
-	pressable: {
-		padding: 12,
-	},
-	taskHeader: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 6,
-	},
-	titleText: {
-		fontSize: 15,
-		fontWeight: "bold",
-		marginBottom: 0,
-		flex: 1,
-	},
+    backgroundColor: theme.white,
+    borderWidth: 1,
+    borderColor: theme.colorLines,
+    borderRadius: 12,
+  },
+  pressable: {
+    padding: 12,
+    gap: 6,
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  titleText: {
+    fontSize: 16,
+    fontWeight: "700",
+    lineHeight: 20,
+  },
+  authorText: { color: "#616161" },
+  authorValue: { color: "#333", fontWeight: "600" },
 	statusPill: {
-		paddingHorizontal: 10,
-		paddingVertical: 4,
-		borderRadius: 999,
-	},
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+  },
 	statusText: {
 		color: theme.white,
 		fontSize: 12,
 		fontWeight: "600",
 	},
 	statusAssigned: { backgroundColor: "#90A4AE" },
-	statusPending: { backgroundColor: "#FF9800" },
-	statusGraded: { backgroundColor: "#4CAF50" },
-	author: {
-		color: "#333",
-		marginTop: 2,
-	},
+  statusPending: { backgroundColor: "#FF9800" },
+  statusGraded: { backgroundColor: "#4CAF50" },
+  course: { color: theme.accentColor, fontWeight: "600" },
+  metaRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  deadline: { color: "#616161" },
+  deadlineValue: { color: "#333", fontWeight: "600" },
 	publishDate: {
 		marginBottom: 0,
 		color: "#666",

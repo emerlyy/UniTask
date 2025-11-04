@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { theme } from "../styles/theme";
+import { formatDateDisplay } from "../utils/formatDate";
 import { Button } from "../components/Button/Button";
 import { Pressable } from "../components/Pressable/Pressable";
 import { Pill } from "../components/Pill/Pill";
@@ -49,10 +50,11 @@ export const TeacherTaskDetailsScreen = ({ route }: Props) => {
   const [evaluateModal, setEvaluateModal] = useState<{ visible: boolean; submission?: Submission }>({ visible: false });
 
   const scoreSchema = z.object({
-    score: z.number({message: "Обов'язкове поле"})
-      .min(1, { message: "Обов'язкове поле" })
-      .transform((v) => Number(v))
-      .refine((n) => n >= 0 && n <= 100, { message: "Введіть число від 0 до 100" }),
+    score: z
+      .coerce
+      .number({ message: "Обов'язкове поле" })
+      .min(0, { message: "Введіть число від 0 до 100" })
+      .max(100, { message: "Введіть число від 0 до 100" }),
   });
 
   type ScoreForm = z.infer<typeof scoreSchema>;
@@ -82,7 +84,7 @@ export const TeacherTaskDetailsScreen = ({ route }: Props) => {
           <View style={[styles.statusPill, styles[`status_${task.status}` as const]]}>
             <Text style={styles.statusText}>{statusLabelMap[task.status]}</Text>
           </View>
-          <Text style={styles.deadline}>Дедлайн: <Text style={styles.deadlineValue}>{task.deadline}</Text></Text>
+          <Text style={styles.deadline}>Дедлайн: <Text style={styles.deadlineValue}>{formatDateDisplay(task.deadline)}</Text></Text>
         </View>
         <Text style={styles.title}>{task.title}</Text>
         <Text style={styles.course}>{task.course}</Text>
@@ -128,7 +130,7 @@ export const TeacherTaskDetailsScreen = ({ route }: Props) => {
                 })()}
               </View>
             </View>
-            <Text style={styles.meta}>Здано: {item.submittedAt}</Text>
+            <Text style={styles.meta}>Здано: {formatDateDisplay(item.submittedAt)}</Text>
             {item.status === "pending" && item.autoScore !== undefined && (() => {
               const raw = item.autoScore;
               const toHundred = raw <= 12 ? Math.round((raw / 12) * 100) : Math.round(raw);
@@ -147,7 +149,7 @@ export const TeacherTaskDetailsScreen = ({ route }: Props) => {
                 onPress={() => {
                   Alert.alert(
                     "Перегляд роботи",
-                    `Студент: ${item.student}\nДата: ${item.submittedAt}`,
+                    `Студент: ${item.student}\nДата: ${formatDateDisplay(item.submittedAt)}`,
                     [{ text: "Закрити" }]
                   );
                 }}

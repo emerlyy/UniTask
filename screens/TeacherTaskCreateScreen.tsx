@@ -7,6 +7,7 @@ import * as DocumentPicker from "expo-document-picker";
 import { Button } from "../components/Button/Button";
 import { Input } from "../components/Input/Input";
 import { theme } from "../styles/theme";
+import { formatDateDisplay } from "../utils/formatDate";
 
 const schema = z.object({
   course: z.string().min(1, { message: "Обов'язкове поле" }),
@@ -16,10 +17,9 @@ const schema = z.object({
     .string()
     .optional()
     .transform((v) => (v ?? "").trim())
-    .refine((v) => v === "" || /^\d{4}-\d{2}-\d{2}$/.test(v), {
-      message: "Формат YYYY-MM-DD",
+    .refine((v) => v === "" || /^\d{4}-\d{2}-\d{2}$/.test(v) || /^\d{2}\.\d{2}\.\d{4}$/.test(v), {
+      message: "Формат ДД.ММ.РРРР або YYYY-MM-DD",
     }),
-  // removed toggles: attempts are single by design; auto score is always shown
   latePenalty: z
     .string()
     .transform((v) => (v ?? "").trim())
@@ -45,12 +45,11 @@ export const TeacherTaskCreateScreen = () => {
   const onSubmit = (data: FormValues) => {
     Alert.alert(
       "Завдання створено",
-      `Курс: ${data.course}\nНазва: ${data.title}\nДедлайн: ${data.deadline || "—"}${referenceAsset ? "\nЕталон: " + referenceAsset.name : ""}`,
+      `Курс: ${data.course}\nНазва: ${data.title}\nДедлайн: ${data.deadline ? formatDateDisplay(data.deadline) : "—"}${referenceAsset ? "\nЕталон: " + referenceAsset.name : ""}`,
       [{ text: "OK", onPress: () => reset() }]
     );
   };
 
-  // Еталонна відповідь
   const [referenceAsset, setReferenceAsset] = useState<DocumentPicker.DocumentPickerAsset | null>(null);
   const pickReference = async () => {
     try {
@@ -104,11 +103,10 @@ export const TeacherTaskCreateScreen = () => {
           control={control}
           name="deadline"
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input label="Дедлайн (YYYY-MM-DD)" placeholder="2025-05-01" value={value} onChangeText={onChange} onBlur={onBlur} errorMessage={errors.deadline?.message} />
+            <Input label="Дедлайн (ДД.ММ.РРРР)" placeholder="01.05.2025" value={value} onChangeText={onChange} onBlur={onBlur} errorMessage={errors.deadline?.message} />
           )}
         />
 
-        {/* switches removed per requirements */}
         <Controller
           control={control}
           name="latePenalty"

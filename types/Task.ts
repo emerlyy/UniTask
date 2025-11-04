@@ -1,4 +1,5 @@
 export type Task = {
+  course?: string;
   title: string;
   body: string;
   mark?: number;
@@ -7,4 +8,3 @@ export type Task = {
   author: string;
   submitted: boolean;
 };
-

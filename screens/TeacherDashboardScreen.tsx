@@ -7,6 +7,7 @@ import { Button } from "../components/Button/Button";
 import { Pill } from "../components/Pill/Pill";
 import { Pressable } from "../components/Pressable/Pressable";
 import { theme } from "../styles/theme";
+import { formatDateDisplay } from "../utils/formatDate";
 
 type TeacherTask = {
   id: string;
@@ -140,7 +141,7 @@ export const TeacherDashboardScreen = () => {
         </View>
         <Text style={styles.cardTitle}>{item.title}</Text>
         <Text style={styles.cardDeadline}>
-          Дедлайн: <Text style={styles.cardDeadlineValue}>{item.deadline}</Text>
+          Дедлайн: <Text style={styles.cardDeadlineValue}>{formatDateDisplay(item.deadline)}</Text>
         </Text>
 
         <View style={styles.cardStats}>
@@ -280,7 +281,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 6,
   },
-  // Pills rendered via shared component
   listContent: {
     paddingBottom: 28,
   },
