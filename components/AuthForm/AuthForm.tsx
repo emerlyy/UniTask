@@ -6,18 +6,14 @@ import {
   TextInputProps,
   View,
 } from "react-native";
-import Animated, {
-  FadeIn,
-  FadeInUp,
-  FadeOut,
-  LinearTransition,
-} from "react-native-reanimated";
+// Animations removed for this form
 import { Controller } from "react-hook-form";
 import { theme } from "../../styles/theme";
 import { UserRole } from "../../types/User";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
 import { Pressable } from "../Pressable/Pressable";
+import { Pill } from "../Pill/Pill";
 import { AuthFormInputs, useAuthForm } from "./hooks/useAuthForm";
 
 type FormInput = {
@@ -53,9 +49,7 @@ const inputsRegister: FormInput[] = [
   ...inputsLogin,
 ];
 
-const AnimatedKeyboardAvoidingView = Animated.createAnimatedComponent(KeyboardAvoidingView);
-
-const layoutTransition = LinearTransition;
+// No AnimatedKeyboardAvoidingView or layout transitions
 
 const roleOptions: { value: UserRole; label: string }[] = [
   { value: "student", label: "Студент" },
@@ -71,20 +65,17 @@ export const AuthForm = () => {
   } = useAuthForm();
 
   return (
-    <AnimatedKeyboardAvoidingView
+    <KeyboardAvoidingView
       behavior="padding"
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-      layout={layoutTransition}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
     >
-      <Animated.Text
-        key={isRegister ? "registerTitle" : "loginTitle"}
-        style={styles.title}
-        entering={FadeIn.delay(100)}
-        exiting={FadeOut.duration(100)}
-      >
-        {isRegister ? "Реєстрація" : "Вхід"}
-      </Animated.Text>
-      <Animated.View style={styles.form} layout={layoutTransition}>
+      {/* Tabs */}
+      <View style={styles.tabsRow}>
+        <Pill label="Вхід" active={!isRegister} onPress={() => (isRegister ? toggleIsRegister() : undefined)} />
+        <Pill label="Реєстрація" active={isRegister} onPress={() => (!isRegister ? toggleIsRegister() : undefined)} />
+      </View>
+
+      <View style={styles.form}>
         {(isRegister ? inputsRegister : inputsLogin).map(({ id, ...props }) => {
           return (
             <Controller
@@ -94,6 +85,7 @@ export const AuthForm = () => {
               render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                 <Input
                   {...props}
+                  variant="filled"
                   value={(value as string) ?? ""}
                   onChangeText={onChange}
                   onBlur={onBlur}
@@ -111,12 +103,7 @@ export const AuthForm = () => {
               required: "Оберіть роль",
             }}
             render={({ field: { value, onChange }, fieldState: { error } }) => (
-              <Animated.View
-                key="roleSelector"
-                entering={FadeInUp}
-                layout={layoutTransition}
-                style={styles.roleContainer}
-              >
+              <View key="roleSelector" style={styles.roleContainer}>
                 <Text style={styles.roleLabel}>Тип акаунту</Text>
                 <View style={styles.roleOptions}>
                   {roleOptions.map((option) => {
@@ -145,82 +132,48 @@ export const AuthForm = () => {
                   })}
                 </View>
                 {error?.message && <Text style={styles.errorMessage}>{error.message}</Text>}
-              </Animated.View>
+              </View>
             )}
           />
         )}
-        <Animated.View layout={layoutTransition} entering={FadeInUp} style={styles.bottomContainer}>
+        <View style={styles.bottomContainer}>
           <Button
             size="large"
             title={isRegister ? "Зареєструватись" : "Увійти"}
-            animateTitle={true}
-            titleKey={isRegister ? "registerButton" : "loginButton"}
+            // animations off
             onPress={handleSubmit(onSubmit)}
+            fullWidth
           />
-          <Animated.View
-            style={styles.bottomTextContainer}
-            key={isRegister ? "registerText" : "loginText"}
-            entering={FadeIn.delay(100)}
-            exiting={FadeOut.duration(100)}
-          >
-            <Text style={styles.bottomText}>
-              {isRegister ? "Вже зареєстровані?" : "Немає акаунту?"}
-            </Text>
-            <Pressable
-              rippleColor="accent"
-              onPress={toggleIsRegister}
-              containerStyle={{ borderRadius: 6, margin: -6 }}
-              pressableStyle={{ padding: 6 }}
-            >
-              <Text style={styles.linkText}>
-                {isRegister ? "Увійти" : "Зареєструватись"}
-              </Text>
-            </Pressable>
-          </Animated.View>
-        </Animated.View>
-      </Animated.View>
-    </AnimatedKeyboardAvoidingView>
+          <Text style={styles.disclaimer}>
+            Продовжуючи, ви погоджуєтесь із умовами використання та політикою конфіденційності.
+          </Text>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 16,
+  tabsRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 12,
   },
   form: {
-    padding: 20,
+    paddingVertical: 6,
     gap: 12,
-    backgroundColor: theme.white,
-    borderRadius: 10,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 2,
-    shadowColor: "#666",
   },
   bottomContainer: {
-    marginTop: 12,
+    marginTop: 14,
+    gap: 10,
   },
-  bottomTextContainer: {
-    marginTop: 18,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-  },
-  bottomText: {},
-  linkText: {
-    color: theme.accentColor,
-    fontWeight: "500",
+  disclaimer: {
+    textAlign: "center",
+    color: "#6b7280",
+    fontSize: 12,
   },
   roleContainer: {
-    marginTop: 4,
+    marginTop: 6,
     gap: 10,
   },
   roleLabel: {
@@ -233,24 +186,25 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   rolePressable: {
-    borderRadius: 6,
+    borderRadius: 8,
     overflow: "hidden",
   },
   roleOption: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: theme.accentColor,
-    borderRadius: 6,
-    backgroundColor: theme.white,
+    borderColor: theme.colorLines,
+    borderRadius: 8,
+    backgroundColor: theme.accentColorMuted,
   },
   roleOptionSelected: {
     backgroundColor: theme.accentColor,
+    borderColor: theme.accentColor,
   },
   roleOptionText: {
-    fontSize: 15,
-    color: theme.accentColor,
-    fontWeight: "500",
+    fontSize: 13,
+    color: "#1f2937",
+    fontWeight: "700",
     textAlign: "center",
   },
   roleOptionTextSelected: {

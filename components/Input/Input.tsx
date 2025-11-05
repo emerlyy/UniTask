@@ -9,12 +9,20 @@ interface InputProps extends React.ComponentProps<typeof TextInput> {
 	label?: string;
 	errorMessage?: string;
 	style?: StyleProp<TextStyle>;
+  variant?: "outline" | "filled" | "underline";
 }
 
 const InputComponent = (
-	{ value, onChangeText, label, errorMessage, style, ...props }: InputProps,
+	{ value, onChangeText, label, errorMessage, style, variant = "outline", ...props }: InputProps,
 	ref: React.Ref<View>
 ) => {
+		const inputStyle = [
+			styles.input,
+			variant === "filled" && styles.inputFilled,
+			variant === "underline" && styles.inputUnderline,
+			style,
+		];
+
 		return (
 			<Animated.View ref={ref}>
 				<View style={styles.labelContainer}>
@@ -30,8 +38,8 @@ const InputComponent = (
 					)}
 				</View>
 				<TextInput
-					style={[styles.input, style]}
-					placeholder="Введіть ваш логін"
+					style={inputStyle}
+					placeholder={props.placeholder}
 					value={value}
 					onChangeText={onChangeText}
 					cursorColor={theme.accentColor}
@@ -66,6 +74,15 @@ const styles = StyleSheet.create({
 		padding: 12,
 		borderRadius: 6,
 		fontSize: 15,
+	},
+	inputFilled: {
+		backgroundColor: "#F3F4F6",
+		borderWidth: 0,
+	},
+	inputUnderline: {
+		borderWidth: 0,
+		borderBottomWidth: 1,
+		borderRadius: 0,
 	},
 	errorMessage: {
 		color: theme.red,
