@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { BRAND_NAME } from "../constants/branding";
 import { Logout } from "../components/Logout/Logout";
 import { TaskScreen } from "../screens/TaskScreen";
 import { Task } from "../types";
@@ -22,7 +23,7 @@ export const StudentStack = () => {
       <Stack.Screen
         name="Tabs"
         component={StudentTabs}
-        options={{ title: "Taskify" }}
+        options={{ title: BRAND_NAME }}
       />
       <Stack.Screen
         name="Task"

@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { BRAND_NAME } from "../constants/branding";
 import { Logout } from "../components/Logout/Logout";
 import { TeacherDashboardScreen } from "../screens/TeacherDashboardScreen";
 import { TeacherTaskDetailsScreen } from "../screens/TeacherTaskDetailsScreen";
@@ -18,7 +19,7 @@ export const TeacherStack = () => {
       screenOptions={{
         headerRight: Logout,
         headerShadowVisible: false,
-        title: "Taskify",
+        title: BRAND_NAME,
       }}
     >
       <Stack.Screen

@@ -4,6 +4,7 @@ import { Pill } from "../components/Pill/Pill";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../styles/theme";
 import { AuthForm } from "../components/AuthForm/AuthForm";
+import { BRAND_NAME } from "../constants/branding";
 
 const SHEET_MAX_HEIGHT = Math.round(Dimensions.get("window").height * 0.72);
 
@@ -11,8 +12,7 @@ export const AuthScreen = () => {
   const [isRegister, setIsRegister] = useState(false);
 
   return (
-    <View style={styles.root}>
-      {/* Accent hero header */}
+    <View style={styles.root}> 
       <View style={styles.heroArea}>
         <View style={styles.heroBgShapeA} />
         <View style={styles.heroBgShapeB} />
@@ -23,13 +23,10 @@ export const AuthScreen = () => {
           </View>
         </SafeAreaView>
           <View style={styles.bottomBlock}>
-            <Text style={styles.brand}>Taskify</Text>
-            <Text style={styles.tagline}>Організуйте навчання без зайвого стресу</Text>
+            <Text style={styles.brand}>{BRAND_NAME}</Text>
           </View>
-      
       </View>
 
-      {/* Bottom sheet form (scrollable when constrained) */}
       <KeyboardAvoidingView style={[styles.sheetArea, { maxHeight: SHEET_MAX_HEIGHT }]} behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <SafeAreaView edges={["bottom"]}>
           <ScrollView
