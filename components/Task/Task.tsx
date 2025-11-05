@@ -26,7 +26,7 @@ export const Task = ({
 }: TaskProps) => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
-  const handleClick = () => {
+  const handleNavigate = () => {
     navigation.navigate("Task", { id });
   };
 
@@ -42,7 +42,7 @@ export const Task = ({
     <Pressable
       containerStyle={styles.container}
       pressableStyle={styles.pressable}
-      onPress={handleClick}
+      onPress={handleNavigate}
       rippleColor="accent"
     >
       <View style={styles.headerRow}>

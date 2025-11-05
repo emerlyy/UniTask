@@ -15,27 +15,6 @@ import { Task } from "../types";
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Task">;
 
-const parseDateLocal = (value?: string | null): Date | null => {
-  if (!value) return null;
-  const str = String(value).trim();
-  let m = str.match(/^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{2}):(\d{2}))?$/);
-  if (m) {
-    const [, y, mo, d, hh, mm] = m;
-    return new Date(Number(y), Number(mo) - 1, Number(d), hh ? Number(hh) : 0, mm ? Number(mm) : 0, 0, 0);
-  }
-  m = str.match(/^(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{2}):(\d{2}))?$/);
-  if (m) {
-    const [, d, mo, y, hh, mm] = m;
-    return new Date(Number(y), Number(mo) - 1, Number(d), hh ? Number(hh) : 0, mm ? Number(mm) : 0, 0, 0);
-  }
-  const dt = new Date(str);
-  if (isNaN(+dt)) return null;
-  return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), dt.getHours(), dt.getMinutes(), 0, 0);
-};
-
-const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
-const endOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
-
 export const TaskScreen = ({
   route: {
     params: { id },
@@ -56,29 +35,22 @@ export const TaskScreen = ({
 	  const status: "assigned" | "pending" | "graded" = !submitted ? "assigned" : submitted && !mark ? "pending" : "graded";
 
   const rel = useMemo(() => getRelativeDeadline(expirationDate), [expirationDate]);
-  const progressElapsed = useMemo(() => {
-    const parsedStart = parseDateLocal(publishDate);
-    const parsedEnd = parseDateLocal(expirationDate);
-    if (!parsedStart || !parsedEnd) return 0;
-    const start = startOfDay(parsedStart);
-    const end = endOfDay(parsedEnd);
+
+  const progress = useMemo(() => {
+    const start = new Date(publishDate).getTime();
+    const end = new Date(expirationDate).getTime();
     if (end <= start) return 0;
-    const now = new Date();
-    if (now <= start) return 0;
-    if (now >= end) return 100;
-    const pct = ((+now - +start) / (+end - +start)) * 100;
-    return Math.max(0, Math.min(100, Math.round(pct)));
+    const now = Date.now();
+    const pctElapsed = ((now - start) / (end - start)) * 100;
+    const pctLeft = 100 - pctElapsed;
+    return Math.max(0, Math.min(100, Math.round(pctLeft)));
   }, [publishDate, expirationDate]);
-  const progress = useMemo(() => 100 - progressElapsed, [progressElapsed]);
 
   const grade = typeof mark === "number" ? Math.max(0, Math.min(100, Math.round(mark))) : null;
   const durationDays = useMemo(() => {
-    const s = parseDateLocal(publishDate);
-    const e = parseDateLocal(expirationDate);
-    if (!s || !e) return null;
-    const start = startOfDay(s).getTime();
-    const end = endOfDay(e).getTime();
-    if (end <= start) return 0;
+    const start = new Date(publishDate).getTime();
+    const end = new Date(expirationDate).getTime();
+    if (!isFinite(start) || !isFinite(end) || end <= start) return null;
     const dayMs = 24 * 60 * 60 * 1000;
     return Math.round((end - start) / dayMs);
   }, [publishDate, expirationDate]);
