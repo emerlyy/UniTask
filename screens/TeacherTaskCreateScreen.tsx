@@ -51,6 +51,7 @@ export const TeacherTaskCreateScreen = () => {
   };
 
   const [referenceAsset, setReferenceAsset] = useState<DocumentPicker.DocumentPickerAsset | null>(null);
+
   const pickReference = async () => {
     try {
       const res = await DocumentPicker.getDocumentAsync({
@@ -60,7 +61,6 @@ export const TeacherTaskCreateScreen = () => {
           "text/plain",
           "application/msword",
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          "application/zip",
           "image/*",
         ],
         copyToCacheDirectory: true,
@@ -72,6 +72,7 @@ export const TeacherTaskCreateScreen = () => {
       console.log("reference file pick error", e);
     }
   };
+
   const removeReference = () => setReferenceAsset(null);
 
   return (

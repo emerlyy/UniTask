@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import tasksData from "../constants/mockdata.json";
 import { theme } from "../styles/theme";
 import { formatDateDisplay } from "../utils/formatDate";
@@ -17,9 +17,23 @@ const parseDate = (str: string) => {
   return null;
 };
 
-const ProgressBar = ({ value, color = theme.accentColor }: { value: number; color?: string }) => (
+const ProgressBar = ({
+  value,
+  color = theme.accentColor,
+}: {
+  value: number;
+  color?: string;
+}) => (
   <View style={styles.progressOuter}>
-    <View style={[styles.progressInner, { width: `${Math.max(0, Math.min(100, value))}%`, backgroundColor: color }]} />
+    <View
+      style={[
+        styles.progressInner,
+        {
+          width: `${Math.max(0, Math.min(100, value))}%`,
+          backgroundColor: color,
+        },
+      ]}
+    />
   </View>
 );
 
@@ -33,22 +47,19 @@ export const StudentAnalyticsScreen = () => {
     const graded = gradedList.length;
     const pending = pendingList.length;
     const assigned = assignedList.length;
-    const avg = graded ? Math.round(gradedList.reduce((s, t) => s + (t.mark || 0), 0) / graded) : 0;
+    const avg = graded
+      ? Math.round(gradedList.reduce((s, t) => s + (t.mark || 0), 0) / graded)
+      : 0;
 
     const byDate = assignedList
       .map((t) => ({ t, d: parseDate(t.expirationDate) }))
       .filter((x) => x.d)
-      .sort((a, b) => (a.d!.getTime() - b.d!.getTime()));
+      .sort((a, b) => a.d!.getTime() - b.d!.getTime());
 
     const future = byDate.filter((x) => x.d!.getTime() >= Date.now());
     const upcomingList = (future.length ? future : byDate)
       .slice(0, 3)
       .map((x) => x.t as TaskItem);
-
-    const topGraded = gradedList
-      .slice()
-      .sort((a, b) => (b.mark || 0) - (a.mark || 0))
-      .slice(0, 3);
 
     const gradedPercent = total ? Math.round((graded / total) * 100) : 0;
     const pendingPercent = total ? Math.round((pending / total) * 100) : 0;
@@ -62,7 +73,17 @@ export const StudentAnalyticsScreen = () => {
     }, 0);
     const onTimePercent = graded ? Math.round((onTimeCount / graded) * 100) : 0;
 
-    return { graded, pending, assigned, avg, upcomingList, gradedPercent, pendingPercent, assignedPercent, onTimePercent };
+    return {
+      graded,
+      pending,
+      assigned,
+      avg,
+      upcomingList,
+      gradedPercent,
+      pendingPercent,
+      assignedPercent,
+      onTimePercent,
+    };
   }, []);
 
   return (
@@ -70,9 +91,18 @@ export const StudentAnalyticsScreen = () => {
       <Text style={styles.title}>Моя статистика</Text>
 
       <View style={styles.cards}>
-        <View style={styles.card}><Text style={styles.value}>{stats.assigned}</Text><Text style={styles.label}>Призначено</Text></View>
-        <View style={styles.card}><Text style={styles.value}>{stats.pending}</Text><Text style={styles.label}>Очікують</Text></View>
-        <View style={styles.card}><Text style={styles.value}>{stats.graded}</Text><Text style={styles.label}>Оцінено</Text></View>
+        <View style={styles.card}>
+          <Text style={styles.value}>{stats.assigned}</Text>
+          <Text style={styles.label}>Призначено</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.value}>{stats.pending}</Text>
+          <Text style={styles.label}>Очікують</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.value}>{stats.graded}</Text>
+          <Text style={styles.label}>Оцінено</Text>
+        </View>
       </View>
 
       <View style={styles.avgCard}>
@@ -82,19 +112,36 @@ export const StudentAnalyticsScreen = () => {
 
       <View style={styles.block}>
         <Text style={styles.blockTitle}>Розподіл статусів</Text>
-        <View style={styles.row}><Text style={styles.rowLabel}>Призначено</Text><Text style={styles.rowValue}>{stats.assignedPercent}%</Text></View>
-        <ProgressBar value={stats.assignedPercent} color={theme.statusAssigned} />
-        <View style={styles.row}><Text style={styles.rowLabel}>Очікують</Text><Text style={styles.rowValue}>{stats.pendingPercent}%</Text></View>
+        <View style={styles.row}>
+          <Text style={styles.rowLabel}>Призначено</Text>
+          <Text style={styles.rowValue}>{stats.assignedPercent}%</Text>
+        </View>
+        <ProgressBar
+          value={stats.assignedPercent}
+          color={theme.statusAssigned}
+        />
+        <View style={styles.row}>
+          <Text style={styles.rowLabel}>Очікують</Text>
+          <Text style={styles.rowValue}>{stats.pendingPercent}%</Text>
+        </View>
         <ProgressBar value={stats.pendingPercent} color={theme.statusPending} />
-        <View style={styles.row}><Text style={styles.rowLabel}>Оцінено</Text><Text style={styles.rowValue}>{stats.gradedPercent}%</Text></View>
+        <View style={styles.row}>
+          <Text style={styles.rowLabel}>Оцінено</Text>
+          <Text style={styles.rowValue}>{stats.gradedPercent}%</Text>
+        </View>
         <ProgressBar value={stats.gradedPercent} color={theme.statusGraded} />
       </View>
 
       <View style={styles.block}>
         <Text style={styles.blockTitle}>Вчасність</Text>
-        <View style={styles.row}><Text style={styles.rowLabel}>Здано вчасно</Text><Text style={styles.rowValue}>{stats.onTimePercent}%</Text></View>
+        <View style={styles.row}>
+          <Text style={styles.rowLabel}>Здано вчасно</Text>
+          <Text style={styles.rowValue}>{stats.onTimePercent}%</Text>
+        </View>
         <ProgressBar value={stats.onTimePercent} color={theme.accentColor} />
-        <Text style={[styles.label, { marginTop: 6 }]}>Розраховано за підтвердженими оцінками</Text>
+        <Text style={[styles.label, { marginTop: 6 }]}>
+          Розраховано за підтвердженими оцінками
+        </Text>
       </View>
 
       {!!stats.upcomingList.length && (
@@ -102,8 +149,12 @@ export const StudentAnalyticsScreen = () => {
           <Text style={styles.blockTitle}>Що зробити найближчим</Text>
           {stats.upcomingList.map((t, idx) => (
             <View key={`${t.title}-${idx}`} style={styles.topRow}>
-              <Text style={styles.topTitle} numberOfLines={1}>{t.title}</Text>
-              <Text style={styles.topMark}>{formatDateDisplay(t.expirationDate)}</Text>
+              <Text style={styles.topTitle} numberOfLines={1}>
+                {t.title}
+              </Text>
+              <Text style={styles.topMark}>
+                {formatDateDisplay(t.expirationDate)}
+              </Text>
             </View>
           ))}
         </View>
@@ -117,21 +168,56 @@ const styles = StyleSheet.create({
   container: { padding: 16, gap: 16 },
   title: { fontSize: 20, fontWeight: "700" },
   cards: { flexDirection: "row", gap: 10 },
-  card: { flex: 1, backgroundColor: theme.white, borderRadius: 12, borderWidth: 1, borderColor: theme.colorLines, padding: 14, alignItems: "center" },
+  card: {
+    flex: 1,
+    backgroundColor: theme.white,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colorLines,
+    padding: 14,
+    alignItems: "center",
+  },
   value: { fontSize: 18, fontWeight: "800" },
   label: { color: theme.textSecondary, marginTop: 4 },
-  avgCard: { backgroundColor: theme.white, borderRadius: 12, borderWidth: 1, borderColor: theme.colorLines, padding: 16, alignItems: "center" },
+  avgCard: {
+    backgroundColor: theme.white,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colorLines,
+    padding: 16,
+    alignItems: "center",
+  },
   avgLabel: { color: theme.textSecondary, marginBottom: 6 },
   avgValue: { fontSize: 24, fontWeight: "800" },
-  block: { backgroundColor: theme.white, borderRadius: 12, borderWidth: 1, borderColor: theme.colorLines, padding: 16, gap: 8 },
+  block: {
+    backgroundColor: theme.white,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colorLines,
+    padding: 16,
+    gap: 8,
+  },
   blockTitle: { fontWeight: "700" },
-  row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   rowLabel: { color: theme.textPrimary },
   rowValue: { fontWeight: "700" },
-  progressOuter: { height: 8, backgroundColor: theme.colorLines, borderRadius: 999, overflow: "hidden" },
+  progressOuter: {
+    height: 8,
+    backgroundColor: theme.colorLines,
+    borderRadius: 999,
+    overflow: "hidden",
+  },
   progressInner: { height: 8, borderRadius: 999 },
   upTitle: { fontWeight: "600", marginTop: 4 },
-  topRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  topRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   topTitle: { flex: 1, marginRight: 10 },
   topMark: { fontWeight: "800" },
 });
