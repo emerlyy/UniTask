@@ -17,7 +17,7 @@ export const StudentTabs = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: theme.accentColor,
-        tabBarInactiveTintColor: "#8A8A8A",
+        tabBarInactiveTintColor: theme.grayInactive,
         tabBarStyle: {
           backgroundColor: theme.white,
           borderTopWidth: 1,

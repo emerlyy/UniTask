@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 50,
-		borderColor: "#e0e3e8",
+		borderColor: theme.inputBorder,
 		borderWidth: 1,
 		marginBottom: 2,
 		padding: 12,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 	},
 	inputFilled: {
-		backgroundColor: "#F3F4F6",
+		backgroundColor: theme.surfaceMuted,
 		borderWidth: 0,
 	},
 	inputUnderline: {

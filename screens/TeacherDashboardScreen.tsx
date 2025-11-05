@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     marginTop: 4,
-    color: "#555",
+    color: theme.textSecondary,
   },
   summaryCard: {
     flexDirection: "row",
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.white,
     paddingVertical: 10,
     paddingHorizontal: 14,
-    shadowColor: "#000",
+    shadowColor: theme.black,
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 1,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   summaryLabel: {
-    color: "#616161",
+    color: theme.textSecondary,
     marginTop: 4,
     textAlign: "center",
   },
@@ -316,16 +316,16 @@ const styles = StyleSheet.create({
     color: theme.white,
   },
   status_draft: {
-    backgroundColor: "#B0BEC5",
+    backgroundColor: theme.statusAssigned,
   },
   status_active: {
     backgroundColor: theme.accentColor,
   },
   status_review: {
-    backgroundColor: "#FF9800",
+    backgroundColor: theme.statusPending,
   },
   status_completed: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: theme.statusGraded,
   },
   cardTitle: {
     fontSize: 18,
@@ -333,12 +333,12 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   cardDeadline: {
-    color: "#616161",
+    color: theme.textSecondary,
     fontSize: 13,
   },
   cardDeadlineValue: {
     fontWeight: "600",
-    color: "#333",
+    color: theme.textPrimary,
   },
   cardStats: {
     flexDirection: "row",
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: "#506680",
+    color: theme.textSecondary,
     marginTop: 2,
     textAlign: "center",
   },

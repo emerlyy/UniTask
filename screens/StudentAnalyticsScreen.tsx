@@ -83,11 +83,11 @@ export const StudentAnalyticsScreen = () => {
       <View style={styles.block}>
         <Text style={styles.blockTitle}>Розподіл статусів</Text>
         <View style={styles.row}><Text style={styles.rowLabel}>Призначено</Text><Text style={styles.rowValue}>{stats.assignedPercent}%</Text></View>
-        <ProgressBar value={stats.assignedPercent} color="#90A4AE" />
+        <ProgressBar value={stats.assignedPercent} color={theme.statusAssigned} />
         <View style={styles.row}><Text style={styles.rowLabel}>Очікують</Text><Text style={styles.rowValue}>{stats.pendingPercent}%</Text></View>
-        <ProgressBar value={stats.pendingPercent} color="#FF9800" />
+        <ProgressBar value={stats.pendingPercent} color={theme.statusPending} />
         <View style={styles.row}><Text style={styles.rowLabel}>Оцінено</Text><Text style={styles.rowValue}>{stats.gradedPercent}%</Text></View>
-        <ProgressBar value={stats.gradedPercent} color="#4CAF50" />
+        <ProgressBar value={stats.gradedPercent} color={theme.statusGraded} />
       </View>
 
       <View style={styles.block}>
@@ -119,14 +119,14 @@ const styles = StyleSheet.create({
   cards: { flexDirection: "row", gap: 10 },
   card: { flex: 1, backgroundColor: theme.white, borderRadius: 12, borderWidth: 1, borderColor: theme.colorLines, padding: 14, alignItems: "center" },
   value: { fontSize: 18, fontWeight: "800" },
-  label: { color: "#555", marginTop: 4 },
+  label: { color: theme.textSecondary, marginTop: 4 },
   avgCard: { backgroundColor: theme.white, borderRadius: 12, borderWidth: 1, borderColor: theme.colorLines, padding: 16, alignItems: "center" },
-  avgLabel: { color: "#555", marginBottom: 6 },
+  avgLabel: { color: theme.textSecondary, marginBottom: 6 },
   avgValue: { fontSize: 24, fontWeight: "800" },
   block: { backgroundColor: theme.white, borderRadius: 12, borderWidth: 1, borderColor: theme.colorLines, padding: 16, gap: 8 },
   blockTitle: { fontWeight: "700" },
   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  rowLabel: { color: "#333" },
+  rowLabel: { color: theme.textPrimary },
   rowValue: { fontWeight: "700" },
   progressOuter: { height: 8, backgroundColor: theme.colorLines, borderRadius: 999, overflow: "hidden" },
   progressInner: { height: 8, borderRadius: 999 },

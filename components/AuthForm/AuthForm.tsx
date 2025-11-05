@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   roleOptionText: {
     fontSize: 13,
-    color: "#1f2937",
+    color: theme.textPrimary,
     fontWeight: "700",
     textAlign: "center",
   },

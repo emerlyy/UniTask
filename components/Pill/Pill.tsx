@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     borderColor: theme.accentColor,
   },
   text: {
-    color: "#444",
+    color: theme.textSecondary,
     fontWeight: "500",
     textAlign: "center",
     fontSize: 13,

@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 20,
     gap: 12,
-    shadowColor: "#000",
+    shadowColor: theme.black,
     shadowOpacity: 0.06,
     shadowRadius: 12,
     elevation: 1,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   emptyText: {
-    color: "#666",
+    color: theme.textSecondary,
   },
   taskCard: {
     backgroundColor: theme.white,
@@ -194,9 +194,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   taskMeta: {
-    color: "#555",
+    color: theme.textSecondary,
   },
   taskDescription: {
-    color: "#333",
+    color: theme.textPrimary,
   },
 });

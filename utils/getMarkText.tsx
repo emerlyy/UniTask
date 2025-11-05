@@ -1,4 +1,5 @@
 import { Text } from "react-native";
+import { theme } from "../styles/theme";
 
 export const getMarkText = (isSubmitted: boolean, mark?: number) => {
 	if (!isSubmitted) return "Не здано";
@@ -6,7 +7,7 @@ export const getMarkText = (isSubmitted: boolean, mark?: number) => {
 	return (
 		<>
 			{mark}
-			<Text style={{ color: "#666" }}>/100</Text>
+            <Text style={{ color: theme.textSecondary }}>/100</Text>
 		</>
 	);
 };
