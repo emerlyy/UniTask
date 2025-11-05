@@ -13,7 +13,6 @@ import { getRelativeDeadline } from "../utils/relativeDeadline";
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Task">;
 
-// Parse common date formats into LOCAL time and normalize to start/end of day
 const parseDateLocal = (value?: string | null): Date | null => {
   if (!value) return null;
   const str = String(value).trim();
@@ -43,7 +42,6 @@ export const TaskScreen = ({
   const [tab, setTab] = useState<"details" | "description">("details");
 
   const rel = useMemo(() => getRelativeDeadline(expirationDate), [expirationDate]);
-  // elapsed percent from publish -> deadline
   const progressElapsed = useMemo(() => {
     const parsedStart = parseDateLocal(publishDate);
     const parsedEnd = parseDateLocal(expirationDate);
@@ -74,7 +72,6 @@ export const TaskScreen = ({
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
-        {/* HERO */}
         <View style={styles.hero}>
           <View style={styles.heroBgShapeA} />
           <View style={styles.heroBgShapeB} />
@@ -104,7 +101,6 @@ export const TaskScreen = ({
           </View>
         </View>
 
-        {/* PROGRESS */}
         <View style={styles.progressCard}>
           <View style={styles.progressHeader}>
             <Text style={styles.progressLabel}>Скільки залишилось</Text>
@@ -119,7 +115,6 @@ export const TaskScreen = ({
           </View>
         </View>
 
-        {/* TABS */}
         <View style={styles.tabsRow}>
           <Pill label="Деталі" active={tab === "details"} onPress={() => setTab("details")} />
           <Pill label="Опис" active={tab === "description"} onPress={() => setTab("description")} />
@@ -148,7 +143,6 @@ export const TaskScreen = ({
         )}
       </ScrollView>
 
-      {/* Bottom submission area */}
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <SafeAreaView edges={["bottom"]} style={styles.footer}>
           <View style={styles.footerInner}>

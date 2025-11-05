@@ -1,5 +1,4 @@
 import { StyleSheet, Text, TextInputProps, View } from "react-native";
-// Animations removed for this form
 import { Controller } from "react-hook-form";
 import { theme } from "../../styles/theme";
 import { UserRole } from "../../types/User";
@@ -41,7 +40,6 @@ const inputsRegister: FormInput[] = [
   ...inputsLogin,
 ];
 
-// No AnimatedKeyboardAvoidingView or layout transitions
 
 const roleOptions: { value: UserRole; label: string }[] = [
   { value: "student", label: "Студент" },
@@ -124,7 +122,6 @@ export const AuthForm = ({ isRegister }: AuthFormProps) => {
           <Button
             size="large"
             title={isRegister ? "Зареєструватись" : "Увійти"}
-            // animations off
             onPress={handleSubmit(onSubmit)}
             fullWidth
           />
