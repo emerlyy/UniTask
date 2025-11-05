@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { theme } from "../../styles/theme";
 import { Pressable } from "../Pressable/Pressable";
@@ -26,14 +26,18 @@ export const Button = ({
 }: ButtonProps) => {
 	return (
 		<Pressable
-			containerStyle={[
-				styles.container,
-				type === "secondary" && styles.secondary,
+			containerStyle={[styles.container]}
+			pressableStyle={[
+				styles.button,
+				size === "large" && styles.large,
+				dense && styles.dense,
+				fullWidth && styles.fullWidth,
+				type === "primary" ? styles.buttonPrimary : styles.buttonSecondary,
 			]}
-			pressableStyle={[styles.button, size === "large" && styles.large, dense && styles.dense, fullWidth && styles.fullWidth]}
 			rippleColor={type === "primary" ? "white" : "accent"}
 			onPress={onPress}
 		>
+			<View style={styles.visualOverlay} pointerEvents="none" />
 			<Animated.Text
 				key={titleKey}
 				entering={animateTitle ? FadeIn.delay(100) : undefined}
@@ -52,9 +56,8 @@ export const Button = ({
 
 const styles = StyleSheet.create({
 	container: {
-		borderRadius: 6,
+		borderRadius: 12,
 		overflow: "hidden",
-		backgroundColor: theme.accentColor,
 	},
 	button: {
 		alignItems: "center",
@@ -62,6 +65,23 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 14,
 	},
+  buttonPrimary: {
+    backgroundColor: theme.accentColor,
+    borderWidth: 1,
+    borderColor: theme.accentColor,
+    shadowColor: theme.black,
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
+    borderRadius: 12,
+  },
+  buttonSecondary: {
+    backgroundColor: theme.accentColorMuted,
+    borderWidth: 1,
+    borderColor: theme.accentColor,
+    borderRadius: 12,
+  },
   dense: {
     paddingVertical: 6,
     paddingHorizontal: 10,
@@ -73,7 +93,9 @@ const styles = StyleSheet.create({
 		color: theme.white,
 		fontSize: 16,
 		lineHeight: 18,
-		fontWeight: "bold",
+		fontWeight: "800",
+		letterSpacing: 0.4,
+		textTransform: "uppercase",
 	},
 	buttonTextDense:{
 		fontSize: 14,
@@ -83,12 +105,18 @@ const styles = StyleSheet.create({
 		paddingVertical: 15,
 		paddingHorizontal: 16,
 	},
-	secondary: {
-		backgroundColor: "transparent",
-		borderWidth: 1,
-		borderColor: theme.accentColor,
-	},
 	buttonTextSecondary: {
 		color: theme.accentColor,
 	},
+  visualOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "55%",
+    backgroundColor: theme.overlayWhiteMid,
+    opacity: 0.35,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
 });
