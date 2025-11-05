@@ -46,6 +46,7 @@ export const TeacherHomeScreen = () => {
 
   const onSubmit = (data: TeacherTaskForm) => {
     const newTask: Task = {
+      id: `task-${Date.now()}`,
       title: data.title,
       body: data.body,
       expirationDate: data.expirationDate,
@@ -99,7 +100,7 @@ export const TeacherHomeScreen = () => {
           name="expirationDate"
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
-              label="Дедлайн"
+              label="Термін здачі"
               placeholder="01.05.2025"
               value={value}
               onChangeText={onChange}
@@ -131,10 +132,10 @@ export const TeacherHomeScreen = () => {
         {createdTasks.length === 0 ? (
           <Text style={styles.emptyText}>Поки що немає створених завдань.</Text>
         ) : (
-          createdTasks.map((task, index) => (
-            <View key={`${task.title}-${index}`} style={styles.taskCard}>
+          createdTasks.map((task) => (
+            <View key={task.id} style={styles.taskCard}>
               <Text style={styles.taskTitle}>{task.title}</Text>
-              <Text style={styles.taskMeta}>Дедлайн: {formatDateDisplay(task.expirationDate)}</Text>
+              <Text style={styles.taskMeta}>Термін здачі: {formatDateDisplay(task.expirationDate)}</Text>
               {task.mark !== undefined && (
                 <Text style={styles.taskMeta}>Максимальний бал: {task.mark}</Text>
               )}

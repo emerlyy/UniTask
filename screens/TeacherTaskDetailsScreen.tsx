@@ -84,7 +84,7 @@ export const TeacherTaskDetailsScreen = ({ route }: Props) => {
           <View style={[styles.statusPill, styles[`status_${task.status}` as const]]}>
             <Text style={styles.statusText}>{statusLabelMap[task.status]}</Text>
           </View>
-          <Text style={styles.deadline}>Дедлайн: <Text style={styles.deadlineValue}>{formatDateDisplay(task.deadline)}</Text></Text>
+          <Text style={styles.deadline}>Термін здачі: <Text style={styles.deadlineValue}>{formatDateDisplay(task.deadline)}</Text></Text>
         </View>
         <Text style={styles.title}>{task.title}</Text>
         <Text style={styles.course}>{task.course}</Text>

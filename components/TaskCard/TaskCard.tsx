@@ -43,7 +43,7 @@ export const TaskCard: React.FC<Props> = ({ title, course, expirationDate, autho
           <Text style={styles.author}>Викладач: <Text style={styles.authorValue}>{author}</Text></Text>
         )}
         <Text style={styles.deadline} numberOfLines={1}>
-          Дедлайн: <Text style={styles.deadlineValue}>{formatDateDisplay(expirationDate)}</Text>
+          Термін здачі: <Text style={styles.deadlineValue}>{formatDateDisplay(expirationDate)}</Text>
           {rel.text ? <Text style={styles.bullet}> • </Text> : null}
           {rel.text ? <Text style={relStyle}>{rel.text}</Text> : null}
         </Text>

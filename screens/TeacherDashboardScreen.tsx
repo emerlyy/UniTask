@@ -141,7 +141,7 @@ export const TeacherDashboardScreen = () => {
         </View>
         <Text style={styles.cardTitle}>{item.title}</Text>
         <Text style={styles.cardDeadline}>
-          Дедлайн: <Text style={styles.cardDeadlineValue}>{formatDateDisplay(item.deadline)}</Text>
+          Термін здачі: <Text style={styles.cardDeadlineValue}>{formatDateDisplay(item.deadline)}</Text>
         </Text>
 
         <View style={styles.cardStats}>

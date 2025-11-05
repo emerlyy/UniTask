@@ -1,4 +1,5 @@
 export type Task = {
+  id: string;
   course?: string;
   title: string;
   body: string;

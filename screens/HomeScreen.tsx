@@ -46,7 +46,7 @@ export const HomeScreen = () => {
 
       <FlatList
         data={withStatus}
-        keyExtractor={(item, index) => `${item.title}-${index}`}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
           <TaskCard
@@ -56,7 +56,7 @@ export const HomeScreen = () => {
             author={item.author}
             mark={item.mark}
             status={item._status}
-            onPress={() => navigation.navigate("Task", { ...item, status: item._status })}
+            onPress={() => navigation.navigate("Task", { id: item.id })}
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}

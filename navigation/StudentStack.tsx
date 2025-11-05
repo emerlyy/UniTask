@@ -2,12 +2,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { BRAND_NAME } from "../constants/branding";
 import { Logout } from "../components/Logout/Logout";
 import { TaskScreen } from "../screens/TaskScreen";
-import { Task } from "../types";
 import { StudentTabs } from "./StudentTabs";
 
 export type StudentStackParamList = {
   Tabs: undefined;
-  Task: Task & { status?: 'assigned' | 'pending' | 'graded' };
+  Task: { id: string };
 };
 
 const Stack = createNativeStackNavigator<StudentStackParamList>();

@@ -68,7 +68,7 @@ export const AuthForm = ({ isRegister }: AuthFormProps) => {
                 <Input
                   {...props}
                   variant="filled"
-                  value={(value as string) ?? ""}
+                  value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   errorMessage={error?.message}

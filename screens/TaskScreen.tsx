@@ -10,6 +10,8 @@ import { RootStackParamList } from "../navigation/AppNav";
 import { theme } from "../styles/theme";
 import { formatDateDisplay } from "../utils/formatDate";
 import { getRelativeDeadline } from "../utils/relativeDeadline";
+import tasksData from "../constants/mockdata.json";
+import { Task } from "../types";
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Task">;
 
@@ -36,10 +38,22 @@ const endOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(
 
 export const TaskScreen = ({
   route: {
-    params: { title, body, expirationDate, publishDate, mark, author, course, status },
+    params: { id },
   },
 }: TaskScreenProps) => {
   const [tab, setTab] = useState<"details" | "description">("details");
+
+  const task: Task | undefined = useMemo(() => tasksData.find((t) => t.id === id), [id]);
+  if (!task) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ color: theme.textSecondary }}>Завдання не знайдено</Text>
+      </View>
+    );
+  }
+
+	  const { title, body, expirationDate, publishDate, mark, author, course, submitted } = task;
+	  const status: "assigned" | "pending" | "graded" = !submitted ? "assigned" : submitted && !mark ? "pending" : "graded";
 
   const rel = useMemo(() => getRelativeDeadline(expirationDate), [expirationDate]);
   const progressElapsed = useMemo(() => {
@@ -91,7 +105,7 @@ export const TaskScreen = ({
 
           <View style={styles.heroBottomRow}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.heroSub}>Дедлайн</Text>
+              <Text style={styles.heroSub}>Термін здачі</Text>
               <Text style={styles.heroDeadline} numberOfLines={1}>{formatDateDisplay(expirationDate)}{rel.text ? ` • ${rel.text}` : ""}</Text>
             </View>
             <View style={styles.scoreBadgeLarge}>
@@ -129,7 +143,7 @@ export const TaskScreen = ({
               <View style={styles.kvItem}><Text style={styles.kvKey}>Курс</Text><Text style={styles.kvVal}>{course || "—"}</Text></View>
               <View style={styles.kvItem}><Text style={styles.kvKey}>Викладач</Text><Text style={styles.kvVal}>{author || "—"}</Text></View>
               <View style={styles.kvItem}><Text style={styles.kvKey}>Початок</Text><Text style={styles.kvVal}>{publishDate ? formatDateDisplay(publishDate) : "—"}</Text></View>
-              <View style={styles.kvItem}><Text style={styles.kvKey}>Дедлайн</Text><Text style={styles.kvVal}>{formatDateDisplay(expirationDate)}</Text></View>
+              <View style={styles.kvItem}><Text style={styles.kvKey}>Термін здачі</Text><Text style={styles.kvVal}>{formatDateDisplay(expirationDate)}</Text></View>
               <View style={styles.kvItem}><Text style={styles.kvKey}>Тривалість</Text><Text style={styles.kvVal}>{durationDays !== null ? `${durationDays} дн.` : "—"}</Text></View>
             </View>
           </View>
