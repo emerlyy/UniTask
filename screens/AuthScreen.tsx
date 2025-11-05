@@ -1,35 +1,46 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
+import { Pill } from "../components/Pill/Pill";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../styles/theme";
 import { AuthForm } from "../components/AuthForm/AuthForm";
 
+const SHEET_MAX_HEIGHT = Math.round(Dimensions.get("window").height * 0.72);
+
 export const AuthScreen = () => {
-  const [sheetHeight, setSheetHeight] = useState(0);
+  const [isRegister, setIsRegister] = useState(false);
 
   return (
     <View style={styles.root}>
       {/* Accent hero header */}
-      <View style={[styles.heroArea, sheetHeight ? { paddingBottom: sheetHeight + 8 } : null]}>
+      <View style={styles.heroArea}>
         <View style={styles.heroBgShapeA} />
         <View style={styles.heroBgShapeB} />
         <SafeAreaView edges={["top"]}>
-          <Text style={styles.brand}>Taskify</Text>
-          <Text style={styles.tagline}>Організуйте навчання без зайвого стресу</Text>
+          <View style={styles.topTabsContainer}>
+            <Pill label="Вхід" active={!isRegister} onPress={() => setIsRegister(false)} />
+            <Pill label="Реєстрація" active={isRegister} onPress={() => setIsRegister(true)} />
+          </View>
         </SafeAreaView>
+          <View style={styles.bottomBlock}>
+            <Text style={styles.brand}>Taskify</Text>
+            <Text style={styles.tagline}>Організуйте навчання без зайвого стресу</Text>
+          </View>
+      
       </View>
 
-      {/* Bottom sheet form */}
-      <SafeAreaView
-        edges={["bottom"]}
-        style={styles.sheetArea}
-        onLayout={(e) => {
-          const h = e.nativeEvent.layout.height;
-          setSheetHeight(h);
-        }}
-      >
-        <AuthForm />
-      </SafeAreaView>
+      {/* Bottom sheet form (scrollable when constrained) */}
+      <KeyboardAvoidingView style={[styles.sheetArea, { maxHeight: SHEET_MAX_HEIGHT }]} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        <SafeAreaView edges={["bottom"]}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={styles.sheetContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <AuthForm isRegister={isRegister} />
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -40,8 +51,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 18,
     paddingTop: 10,
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     position: "relative",
+    flexGrow:1
   },
   heroBgShapeA: {
     position: "absolute",
@@ -63,11 +75,20 @@ const styles = StyleSheet.create({
   },
   brand: { color: theme.white, fontSize: 34, fontWeight: "900" },
   tagline: { color: "#E7F0FF", marginTop: 8, fontWeight: "700", maxWidth: "90%" },
+  bottomBlock: { alignItems: "center", gap: 4, marginTop: 12, marginBottom:12 },
+  topTabsContainer: {
+    alignSelf: "center",
+    flexDirection: "row",
+    flexGrow:1,
+    gap: 8,
+    marginTop: 4,
+    backgroundColor: theme.white,
+    borderRadius: 999,
+    padding: 6,
+    borderWidth: 1,
+    borderColor: theme.colorLines,
+  },
   sheetArea: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
     backgroundColor: theme.white,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
@@ -79,5 +100,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -8 },
     shadowRadius: 12,
     elevation: 6,
+  },
+  sheetContent: {
+    paddingBottom: 8,
   },
 });

@@ -1,11 +1,4 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInputProps,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TextInputProps, View } from "react-native";
 // Animations removed for this form
 import { Controller } from "react-hook-form";
 import { theme } from "../../styles/theme";
@@ -13,7 +6,6 @@ import { UserRole } from "../../types/User";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
 import { Pressable } from "../Pressable/Pressable";
-import { Pill } from "../Pill/Pill";
 import { AuthFormInputs, useAuthForm } from "./hooks/useAuthForm";
 
 type FormInput = {
@@ -56,26 +48,18 @@ const roleOptions: { value: UserRole; label: string }[] = [
   { value: "teacher", label: "Викладач" },
 ];
 
-export const AuthForm = () => {
+type AuthFormProps = {
+  isRegister: boolean;
+};
+
+export const AuthForm = ({ isRegister }: AuthFormProps) => {
   const {
     form: { control, handleSubmit },
-    isRegister,
-    toggleIsRegister,
     onSubmit,
-  } = useAuthForm();
+  } = useAuthForm({ isRegister });
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-    >
-      {/* Tabs */}
-      <View style={styles.tabsRow}>
-        <Pill label="Вхід" active={!isRegister} onPress={() => (isRegister ? toggleIsRegister() : undefined)} />
-        <Pill label="Реєстрація" active={isRegister} onPress={() => (!isRegister ? toggleIsRegister() : undefined)} />
-      </View>
-
-      <View style={styles.form}>
+    <View style={styles.form}>
         {(isRegister ? inputsRegister : inputsLogin).map(({ id, ...props }) => {
           return (
             <Controller
@@ -144,21 +128,12 @@ export const AuthForm = () => {
             onPress={handleSubmit(onSubmit)}
             fullWidth
           />
-          <Text style={styles.disclaimer}>
-            Продовжуючи, ви погоджуєтесь із умовами використання та політикою конфіденційності.
-          </Text>
         </View>
-      </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  tabsRow: {
-    flexDirection: "row",
-    gap: 8,
-    marginBottom: 12,
-  },
   form: {
     paddingVertical: 6,
     gap: 12,
@@ -166,11 +141,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     marginTop: 14,
     gap: 10,
-  },
-  disclaimer: {
-    textAlign: "center",
-    color: "#6b7280",
-    fontSize: 12,
   },
   roleContainer: {
     marginTop: 6,

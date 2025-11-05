@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAuth } from "../../../context/AuthContext";
@@ -49,21 +49,23 @@ const registerDefaults: AuthFormInputs = {
   role: undefined,
 };
 
-export const useAuthForm = () => {
-  const [isRegister, setIsRegister] = useState(false);
+type useAuthFormProps = {
+  isRegister: boolean;
+};
+
+export const useAuthForm = ({ isRegister }: useAuthFormProps) => {
   const { register, login } = useAuth();
 
-  const resolver = useMemo(() => (isRegister ? registerResolver : loginResolver), [isRegister]);
+  const resolver = useMemo(
+    () => (isRegister ? registerResolver : loginResolver),
+    [isRegister]
+  );
 
   const form = useForm<AuthFormInputs>({
     defaultValues: loginDefaults,
     mode: "onSubmit",
     resolver,
   });
-
-  const toggleIsRegister = () => {
-    setIsRegister((prev) => !prev);
-  };
 
   const { reset } = form;
 
@@ -86,8 +88,6 @@ export const useAuthForm = () => {
 
   return {
     form,
-    isRegister,
-    toggleIsRegister,
     onSubmit,
   };
 };
