@@ -20,7 +20,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "useNextNotificationsApi": true
+      "useNextNotificationsApi": true,
+      "package": "com.emerly.unitask"
     },
     "web": {
       "output": "static",
@@ -44,8 +45,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2123fd11-7953-42c6-85a6-a3230c49811e"
-      }
+        "projectId": "276b13c5-881b-497a-bb9f-a2a61d87a3fe"
+      },
+      "router": {}
     },
     "experiments": {
       "typedRoutes": true,

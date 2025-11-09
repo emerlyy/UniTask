@@ -45,7 +45,7 @@ export const TeacherTaskCreateScreen = () => {
   const onSubmit = (data: FormValues) => {
     Alert.alert(
       "Завдання створено",
-      `Курс: ${data.course}\nНазва: ${data.title}\nДедлайн: ${data.deadline ? formatDateDisplay(data.deadline) : "—"}${referenceAsset ? "\nЕталон: " + referenceAsset.name : ""}`,
+      `Курс: ${data.course}\nНазва: ${data.title}\nТермін здачі: ${data.deadline ? formatDateDisplay(data.deadline) : "—"}${referenceAsset ? "\nЕталон: " + referenceAsset.name : ""}`,
       [{ text: "OK", onPress: () => reset() }]
     );
   };
@@ -104,7 +104,7 @@ export const TeacherTaskCreateScreen = () => {
           control={control}
           name="deadline"
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input label="Дедлайн (ДД.ММ.РРРР)" placeholder="01.05.2025" value={value} onChangeText={onChange} onBlur={onBlur} errorMessage={errors.deadline?.message} />
+            <Input label="Термін здачі (ДД.ММ.РРРР)" placeholder="01.05.2025" value={value} onChangeText={onChange} onBlur={onBlur} errorMessage={errors.deadline?.message} />
           )}
         />
 
