@@ -31,10 +31,16 @@ export const TaskScreen = ({
     );
   }
 
-	  const { title, body, expirationDate, publishDate, mark, author, course, submitted } = task;
-	  const status: "assigned" | "pending" | "graded" = !submitted ? "assigned" : submitted && !mark ? "pending" : "graded";
+  const { title, body, expirationDate, publishDate, mark, author, course, submitted } = task;
+  const status: "assigned" | "pending" | "graded" = !submitted ? "assigned" : submitted && !mark ? "pending" : "graded";
 
-  const rel = useMemo(() => getRelativeDeadline(expirationDate), [expirationDate]);
+  const rel = useMemo(() => {
+    const relative = getRelativeDeadline(expirationDate);
+    if (status === "graded" || (status !== "assigned" && relative.kind === "overdue")) {
+      return { text: "", kind: "neutral" as const };
+    }
+    return relative;
+  }, [expirationDate, status]);
 
   const progress = useMemo(() => {
     const start = new Date(publishDate).getTime();

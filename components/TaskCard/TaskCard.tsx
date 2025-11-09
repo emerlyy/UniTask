@@ -19,6 +19,8 @@ type Props = {
 
 export const TaskCard: React.FC<Props> = ({ title, course, expirationDate, author, mark, status, onPress }) => {
   const rel = getRelativeDeadline(expirationDate);
+  const hideRelative = status === "graded" || (status !== "assigned" && rel.kind === "overdue");
+  const showRelative = !hideRelative && !!rel.text;
   const relStyle = rel.kind === "soon" ? styles.relativeSoon : rel.kind === "overdue" ? styles.relativeOverdue : styles.relativeNeutral;
   return (
     <Pressable
@@ -44,8 +46,8 @@ export const TaskCard: React.FC<Props> = ({ title, course, expirationDate, autho
         )}
         <Text style={styles.deadline} numberOfLines={1}>
           Термін здачі: <Text style={styles.deadlineValue}>{formatDateDisplay(expirationDate)}</Text>
-          {rel.text ? <Text style={styles.bullet}> • </Text> : null}
-          {rel.text ? <Text style={relStyle}>{rel.text}</Text> : null}
+          {showRelative ? <Text style={styles.bullet}> • </Text> : null}
+          {showRelative ? <Text style={relStyle}>{rel.text}</Text> : null}
         </Text>
       </View>
     </Pressable>

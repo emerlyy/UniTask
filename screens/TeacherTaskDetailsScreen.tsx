@@ -36,9 +36,9 @@ type Submission = {
 
 const mockTaskById = (id: string) => ({
   id,
-  title: "Лабораторна робота №2. Масиви та сортування",
-  course: "Алгоритми та структури даних",
-  deadline: "2025-03-05",
+  title: "Практична робота №2",
+  course: "Програмування",
+  deadline: "2025-12-05",
   status: "review" as const,
 });
 
@@ -46,22 +46,21 @@ const mockSubmissions: Submission[] = [
   {
     id: "s1",
     student: "Петренко Ігор",
-    submittedAt: "2025-02-20 10:41",
+    submittedAt: "2025-11-20 10:41",
     autoScore: 87,
     status: "pending",
   },
   {
     id: "s2",
-    student: "Івасюк Вадим",
-    submittedAt: "2025-02-20 09:12",
+    student: "Шевченко Ярослав",
+    submittedAt: "2025-11-20 09:12",
     autoScore: 92,
-    finalScore:92,
-    status: "graded",
+    status: "pending",
   },
   {
     id: "s3",
     student: "Коваль Марія",
-    submittedAt: "2025-02-19 18:33",
+    submittedAt: "2025-11-19 18:33",
     autoScore: 74,
     status: "pending",
   },

@@ -16,12 +16,12 @@ const inputsLogin: FormInput[] = [
   {
     id: "email",
     label: "Електронна пошта",
-    placeholder: "test@vntu.edu.ua",
+    placeholder: "example@vntu.edu.ua",
   },
   {
     id: "password",
     label: "Пароль",
-    placeholder: "password212",
+    placeholder: "strongpass",
     secureTextEntry: true,
   },
 ];
@@ -30,12 +30,12 @@ const inputsRegister: FormInput[] = [
   {
     id: "lastName",
     label: "Прізвище",
-    placeholder: "Іванов",
+    placeholder: "Коваленко",
   },
   {
     id: "firstName",
     label: "Ім'я",
-    placeholder: "Іван",
+    placeholder: "Ярослав",
   },
   ...inputsLogin,
 ];
